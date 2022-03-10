@@ -62,12 +62,11 @@ jobs:
         uses: Azure/appservice-settings@v1
         with:
           app-name: app-azure-sprint-devsecops-teamotter
-          app-settings-json: '[
+          app-settings-json: '
             {
             "name": "SqlConnectionString",
             "value": "${{secrets.SQLCONNECTIONSTRING}}",
-            },
-            ]'
+            }'
 
       - name: Azure Webapp deploy
         uses: Azure/webapps-deploy@v2
