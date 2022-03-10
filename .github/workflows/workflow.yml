@@ -65,7 +65,7 @@ jobs:
           app-settings-json: '
             {
             "name": "SqlConnectionString",
-            "value": "${{secrets.SQLCONNECTIONSTRING}}",
+            "value": "${{secrets.SQLCONNECTIONSTRING}}"
             }'
 
       - name: Azure Webapp deploy
