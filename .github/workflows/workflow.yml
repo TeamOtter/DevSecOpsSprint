@@ -75,3 +75,43 @@ jobs:
         with:
           app-name: ${{env.WEB_APP_NAME}}
           package: ./taa-portal
+
+  release-to-azure-prod:
+    runs-on: ubuntu-latest
+
+    needs: [release-to-azure]
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    env:
+      WEB_APP_NAME: app-azure-sprint-devsecops-teamotterprod
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v2.0.5
+        with:
+          name: drop
+          path: ./taa-portal
+
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.TEAM_OTTER_PROD}}
+
+      - name: Azure App Settings
+        uses: Azure/appservice-settings@v1
+        with:
+          app-name: app-azure-sprint-devsecops-teamotterprod
+          app-settings-json: |
+            [
+              {
+                "name": "SqlConnectionString",
+                "value": "@Microsoft.KeyVault(VaultName=kv-teamotterprod;SecretName=SqlConnectionString)"
+              }
+            ]
+
+      - name: Azure Webapp deploy
+        uses: Azure/webapps-deploy@v2
+        with:
+          app-name: ${{env.WEB_APP_NAME}}
+          package: ./taa-portal
