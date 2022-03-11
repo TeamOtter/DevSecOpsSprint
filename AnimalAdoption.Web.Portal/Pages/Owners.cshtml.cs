@@ -27,10 +27,10 @@ namespace AnimalAdoption.Web.Portal.Pages
 
         public void OnGet(string id)
         {
-            var query = "Select * From Owners Where Id = " + id;
+            // var query = "Select * From Owners Where Id = " + id;
             Owners = _context.Owners
-                        .FromSqlRaw(query)
-                        .ToList();
+                .Where(x => x.Id == int.Parse(id))
+                .ToList();
         }
     }
 }
